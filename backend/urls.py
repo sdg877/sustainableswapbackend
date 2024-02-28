@@ -26,19 +26,23 @@ router.register(r'items', views.ItemViewSet)
 router.register(r'swaps', views.SwapViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 
-from main_app.views import ItemCreate, ItemViewSet
+from main_app.views import ItemViewSet, user_items, create_swap, about_me
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name ='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name ='token_refresh'),
-    path('items/', ItemViewSet.as_view({'get': 'list'})),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('items/create/', ItemCreate.as_view(), name='item_create'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('login-signup/', views.login_view, name='login'),
-    path('login-signup/', views.signup_view, name='signup'),
+    path('signup/', views.SignupView.as_view(), name='authregister'),
     path('items/<int:item_id>/', views.item_view, name='item_view'),
+    path('profile/<int:user_id>/items/', user_items, name='user_items'),
+    path('items/<int:item_id>/delete/', views.delete_item, name='delete_item'),
+    path('items/<int:item_id>/edit/', views.edit_item, name='edit_item'),
+    # path('add-photo/<int:item_id>/', views.add_photo, name='add-photo'),
+    path('create_swap/', create_swap, name='create_swap'),
+    path('about/', views.about_me, name='about_me'),
     path('', include(router.urls)),
 ]
