@@ -41,7 +41,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'sustainableswapbackend-production.up.railway.app',
-    'sustainableswapbackend.railway.internal'
+    'sustainableswapbackend.railway.internal',
+    'sustainableswapfe-production.up.railway.app',
 ]
 
 
@@ -78,7 +79,10 @@ ROOT_URLCONF = 'backend.urls'
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
-    'http://127.0.0.1'
+    'http://127.0.0.1',
+    'https://*.railway.app/',
+    'https://sustainableswapbackend-production.up.railway.app/', #FE public
+
 ]
 
 CSRF_ALLOWED_ORIGINS = [
