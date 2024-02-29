@@ -31,19 +31,21 @@ class ItemSerializer(serializers.ModelSerializer):
 
         return item
 
-# class ItemSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Item
-#         fields = ['item_title', 'item_description', 'listing_active', 'user', 'id']
+class SwapSerializer(serializers.ModelSerializer):
+    item_id = serializers.PrimaryKeyRelatedField(
+        queryset=Item.objects.all(),
+        source='item',  # This tells DRF which model attribute to map this field to
+        write_only=True  # This field is used for writing an item ID upon creation but not included in serialization output
+    )
 
-#     def create(self, validated_data):
-#         return Item.objects.create(**validated_data)
-
-
-class SwapSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Swap
-        fields = ['item_title', 'item_description', 'offer_accepted']
+        fields = ['item_title', 'item_description', 'offer_accepted', 'item_id', 'user']
+
+# class SwapSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Swap
+#         fields = ['item_title', 'item_description', 'offer_accepted', 'item_id']
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

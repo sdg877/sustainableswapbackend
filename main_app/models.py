@@ -18,6 +18,9 @@ class Swap(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user.username}'s offer for {self.item.item_title}"
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

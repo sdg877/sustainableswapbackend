@@ -38,13 +38,15 @@ SECRET_KEY = 'django-insecure-^^xz96&m907sm(z2c#p6_l*mq3)$nn8xbe)4ehiq8+_j6!iy0#
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost'
+    'localhost',
+    '127.0.0.1'
 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main_app',
     'rest_framework',
-    'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
@@ -74,7 +75,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'backend.urls'
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost',
+    'http://127.0.0.1'
+]
+
+CSRF_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://127.0.0.1'
 ]
 
 
@@ -177,7 +184,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
      'ROTATE_REFRESH_TOKENS': True,
      'BLACKLIST_AFTER_ROTATION': True

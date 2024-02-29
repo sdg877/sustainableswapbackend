@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import CreateAPIView
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import boto3
 import os
 import uuid
@@ -54,12 +56,25 @@ class LogoutView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+# def item_view(request, item_id):
+#     try:
+#         item = Item.objects.get(id=item_id)
+#         item_data = {
+#             'item_title': item.item_title,
+#             'item_description': item.item_description,
+#         }
+#         return JsonResponse(item_data)
+#     except Item.DoesNotExist:
+#         return JsonResponse({'error': 'Item not found'}, status=404)
+
+@csrf_exempt    
 def item_view(request, item_id):
     try:
         item = Item.objects.get(id=item_id)
         item_data = {
             'item_title': item.item_title,
             'item_description': item.item_description,
+            'image_url': item.image.url if item.image else None,
         }
         return JsonResponse(item_data)
     except Item.DoesNotExist:
@@ -117,48 +132,26 @@ def delete_item(request, item_id):
     except Item.DoesNotExist:
         return JsonResponse({'error': 'Item not found'}, status=404)
 
-@api_view(['PATCH'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def edit_item(request, item_id):
+    print(request)
     if request.method == 'PUT' and not request.path.endswith('/'):
-        # Append trailing slash to the URL
         return JsonResponse({'message': 'Please use the URL with a trailing slash'}, status=400)
 
-    # Retrieve the item object
     item = get_object_or_404(Item, pk=item_id)
+    print(item)
 
     if request.method == 'PUT':
-        # Extract data from request
-        new_item_data = request.data  # Assuming you are using DRF's request object
-        # Update item fields with new data
+        new_item_data = request.data 
+       
+        print(new_item_data)        
         for key, value in new_item_data.items():
             setattr(item, key, value)
-        # Save the updated item
         item.save()
         return JsonResponse({'message': 'Item updated successfully'})
     else:
-        # Handle other HTTP methods if necessary
         return JsonResponse({'message': 'Method not allowed'}, status=405)
-
-# @login_required
-# def add_photo(request, item_id):
-#     photo_file = request.FILES.get('photo-file', None)
-#     if photo_file:
-#         s3 = boto3.client('s3',
-#                           aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-#                           aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-#                           region_name=os.getenv('AWS_S3_REGION_NAME'))
-#         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-#         try:
-#             bucket = os.getenv('S3_BUCKET')
-#             s3.upload_fileobj(photo_file, bucket, key)
-#             url = f"{os.getenv('S3_BASE_URL')}{bucket}/{key}"
-#             # Assuming you have an Item model to store the photo URL
-#             Item.objects.create(item_title="Your Item Title", item_description="Your Item Description", photo_url=url)
-#         except Exception as e:
-#             print('An error occurred uploading file to S3')
-#             print(e)
-#     return redirect('detail', item_id=item_id)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -169,7 +162,7 @@ def create_swap(request, item_id):
         data['item'] = item_id  # Add the item ID to the request data
         serializer = SwapSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user = request.user)
             return JsonResponse({'message': 'Swap submitted successfully'})
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -178,3 +171,22 @@ def create_swap(request, item_id):
     
 def about_me(request):
     return render(request, 'about_me.html')
+
+@api_view(['GET'])
+def get_swaps(request, item_id):
+    try:
+        item = get_object_or_404(Item, pk=item_id)
+        swaps = Swap.objects.filter(item=item)
+        serializer = SwapSerializer(swaps, many=True)
+        return Response(serializer.data)
+    except Item.DoesNotExist:
+        return Response({'error': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+# @api_view(['DELETE'])
+# def delete_swap(request, swap_id):
+#     try:
+#         swap = Swap.objects.get(pk=swap_id)
+#         swap.delete()
+#         return Response({'message': 'Offer deleted successfully'})
+#     except Swap.DoesNotExist:
+#         return Response({'error': 'Offer not found'}, status=404)
