@@ -43,6 +43,7 @@ ALLOWED_HOSTS = [
     'sustainableswapbackend-production.up.railway.app',
     'sustainableswapbackend.railway.internal',
     'sustainableswapfe-production.up.railway.app',
+    'ultra-channel-production.up.railway.app'
 ]
 
 
