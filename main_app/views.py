@@ -56,16 +56,6 @@ class LogoutView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# def item_view(request, item_id):
-#     try:
-#         item = Item.objects.get(id=item_id)
-#         item_data = {
-#             'item_title': item.item_title,
-#             'item_description': item.item_description,
-#         }
-#         return JsonResponse(item_data)
-#     except Item.DoesNotExist:
-#         return JsonResponse({'error': 'Item not found'}, status=404)
 
 @csrf_exempt    
 def item_view(request, item_id):
@@ -158,8 +148,8 @@ def edit_item(request, item_id):
 def create_swap(request, item_id):
     try:
         item = get_object_or_404(Item, pk=item_id)
-        data = request.data.copy()  # Copy the request data to modify it
-        data['item'] = item_id  # Add the item ID to the request data
+        data = request.data.copy() 
+        data['item'] = item_id  
         serializer = SwapSerializer(data=data)
         if serializer.is_valid():
             serializer.save(user = request.user)
@@ -182,11 +172,3 @@ def get_swaps(request, item_id):
     except Item.DoesNotExist:
         return Response({'error': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
     
-# @api_view(['DELETE'])
-# def delete_swap(request, swap_id):
-#     try:
-#         swap = Swap.objects.get(pk=swap_id)
-#         swap.delete()
-#         return Response({'message': 'Offer deleted successfully'})
-#     except Swap.DoesNotExist:
-#         return Response({'error': 'Offer not found'}, status=404)
