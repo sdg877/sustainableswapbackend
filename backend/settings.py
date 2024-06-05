@@ -46,6 +46,10 @@ ALLOWED_HOSTS = [
     'ultra-channel-production.up.railway.app'
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://sustainableswapfe-production.up.railway.app",
+]
+
 
 # Application definition
 
