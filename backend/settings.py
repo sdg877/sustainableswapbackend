@@ -93,6 +93,7 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_ALLOWED_ORIGINS = [
     'http://localhost',
     'http://127.0.0.1',
+    'https://sustainableswapfe-production.up.railway.app'
 ]
 
 
