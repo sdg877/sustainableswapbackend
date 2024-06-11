@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from .models import Item, Swap, Profile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from .serializers import UserSerializer, GroupSerializer, ItemSerializer, SwapSerializer, ProfileSerializer
+from .serializers import UserSerializer, ItemSerializer, SwapSerializer, ProfileSerializer
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
