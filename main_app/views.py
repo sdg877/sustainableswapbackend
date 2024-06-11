@@ -25,10 +25,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class GroupViewSet(viewsets.ModelViewSet):
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
