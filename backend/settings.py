@@ -89,7 +89,7 @@ ROOT_URLCONF = 'backend.urls'
 #     'http://127.0.0.1',
 #     'https://*.railway.app/',
 #     'https://sustainableswapbackend-production.up.railway.app/', 
-#     'sustainableswapbackend-production-8fc7.up.railway.app'
+#     'https://sustainableswapbackend-production-8fc7.up.railway.app'
 # ]
 
 CSRF_TRUSTED_ORIGINS = [
