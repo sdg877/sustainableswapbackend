@@ -43,11 +43,13 @@ ALLOWED_HOSTS = [
     'sustainableswapbackend-production.up.railway.app',
     'sustainableswapbackend.railway.internal',
     'sustainableswapfe-production.up.railway.app',
-    'ultra-channel-production.up.railway.app'
+    'ultra-channel-production.up.railway.app',
+    'sustainableswapbackend-production-8fc7.up.railway.app'
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://sustainableswapfe-production.up.railway.app",
+    'https://sustainableswapfe-production.up.railway.app',
+    'sustainableswapbackend-production-8fc7.up.railway.app'
 ]
 
 
@@ -66,7 +68,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -82,12 +84,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost',
+#     'http://127.0.0.1',
+#     'https://*.railway.app/',
+#     'https://sustainableswapbackend-production.up.railway.app/', 
+#     'sustainableswapbackend-production-8fc7.up.railway.app'
+# ]
+
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
     'http://127.0.0.1',
-    'https://*.railway.app/',
-    'https://sustainableswapbackend-production.up.railway.app/', #FE public
-
+    'https://sustainableswapfe-production.up.railway.app',
+    'https://sustainableswapbackend-production.up.railway.app',
+    'https://sustainableswapbackend-production-8fc7.up.railway.app',  
 ]
 
 CSRF_ALLOWED_ORIGINS = [
